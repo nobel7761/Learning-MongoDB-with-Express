@@ -42,7 +42,7 @@ const studentUpdate = async (req, res) => {
     const id = req.params.id;
     const updatedData = req.body;
     try {
-        const student = await Student.findByIdAndUpdate(id, updatedData, { new: true });
+        const student = await Student.findByIdAndUpdate(id, updatedData, { new: true, useFindAndModify: false });
         // findByIdAndUpdate 3 ta parameter ney!
         // id, 
         // updatedData, 
@@ -58,9 +58,18 @@ const studentUpdate = async (req, res) => {
 
 };
 
-const studentDelete = (req, res) => {
-    const id = parseInt(req.params.id);
-
+const studentDelete = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const student = await Student.findByIdAndDelete(id);
+        if (!student) {
+            return res.status(404).send("ID not found")
+        }
+        res.send(student);
+    }
+    catch (error) {
+        return res.status(404).send("ID not found")
+    }
 };
 
 router.route('/')
