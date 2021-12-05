@@ -22,65 +22,23 @@ const studentSchema = new mongoose.Schema({
 //Model (mongoose feature! not mongoDB)
 const Student = mongoose.model('Student', studentSchema); //model() will receive 2 parameters! 1st = collection_name, 2nd = Schema_Name
 
-const student = new Student({
-    firstName: "Md. Habibur",
-    lastName: "Rahaman",
-    dob: new Date("21 June 1997"),
-    passed: true,
-    hobbies: ["Coding", "Leading", "Video Editing"],
-    parents: {
-        father: "Abdur Razzak",
-        mother: "Parul Begum"
-    },
-    subjects: [{ name: "Math", marks: 65 }, { name: "Bangla", marks: 70 }]
-})
-
-//CRUD
-
-//C => Create
 async function createStudent() {
-    try {
-        const data = await student.save();//save() function will save student document in mongoDb
-        console.log(data);
-    }
-    catch (error) {
-        console.log(error._message);
-    }
-}
+    const data = await Student.create({
+        firstName: "Rokaiah",
+        lastName: "Fardous",
+        dob: new Date("21 June 1997"),
+        passed: true,
+        hobbies: ["Coding", "Leading", "Video Editing"],
+        parents: {
+            father: "Abdur Razzak",
+            mother: "Parul Begum"
+        },
+        subjects: [{ name: "Math", marks: 65 }, { name: "Bangla", marks: 70 }]
+    });
 
-// createStudent();
-
-//R => Read
-async function readStudent() {
-    try {
-        const data = await Student
-            .find()
-            .select({ firstName: 1, lastName: 1, hobbies: 1 })//only ei field er data gula dekhabe!
-            .countDocuments();//total koyta document return korlo ta count kore dekhabe! 
-        //find, limit, sort, select mongoDB te jevabe kaj kore ekhaneo thik sevabe kaj korbe!
-        console.log(data);
-    }
-    catch (error) {
-        console.log(error._message);
-    }
-}
-
-// readStudent();
-
-
-//U => Update
-async function updateStudent(id) {
-    const data = await Student.updateOne({ _id: id }, { passed: false })
     console.log(data);
+
 }
 
-// updateStudent('61acff43393c457aa5c56409');
+createStudent();
 
-
-//D => Delete
-async function deleteStudent(id) {
-    const data = await Student.deleteOne({ _id: id })
-    console.log(data);
-}
-
-deleteStudent('61acff43393c457aa5c56409');
