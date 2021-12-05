@@ -39,8 +39,6 @@ const student = new Student({
 
 //C => Create
 async function createStudent() {
-
-
     try {
         const data = await student.save();//save() function will save student document in mongoDb
         console.log(data);
@@ -57,9 +55,9 @@ async function readStudent() {
     try {
         const data = await Student
             .find()
-            .limit(10)
-            .sort({ firstName: -1 /*descending order*/, lastName: 1 })
-            .select({ firstName: 1, lastName: 1, hobbies: 1 });
+            .select({ firstName: 1, lastName: 1, hobbies: 1 })//only ei field er data gula dekhabe!
+            .countDocuments();//total koyta document return korlo ta count kore dekhabe! 
+        //find, limit, sort, select mongoDB te jevabe kaj kore ekhaneo thik sevabe kaj korbe!
         console.log(data);
     }
     catch (error) {
@@ -67,4 +65,22 @@ async function readStudent() {
     }
 }
 
-readStudent();
+// readStudent();
+
+
+//U => Update
+async function updateStudent(id) {
+    const data = await Student.updateOne({ _id: id }, { passed: false })
+    console.log(data);
+}
+
+// updateStudent('61acff43393c457aa5c56409');
+
+
+//D => Delete
+async function deleteStudent(id) {
+    const data = await Student.deleteOne({ _id: id })
+    console.log(data);
+}
+
+deleteStudent('61acff43393c457aa5c56409');
