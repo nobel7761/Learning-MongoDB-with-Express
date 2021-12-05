@@ -21,21 +21,27 @@ const studentSchema = new mongoose.Schema({
 
 //Model (mongoose feature! not mongoDB)
 const Student = mongoose.model('Student', studentSchema); //model() will receive 2 parameters! 1st = collection_name, 2nd = Schema_Name
-const student = new Student({
-    firstName: "Habibur",
-    lastName: "Rahaman",
-    dob: new Date("21 June 1997"),
-    passed: true,
-    hobbies: ["Coding", "Leading", "Video Editing"],
-    parents: {
-        father: "Abdur Razzak",
-        mother: "Parul Begum"
-    },
-    subjects: [{ name: "Math", marks: 65 }, { name: "Bangla", marks: 70 }]
-})
+async function createStudent() {
+    const student = new Student({
+        firstName: "Md. Habibur",
+        lastName: "Rahaman",
+        dob: new Date("21 June 1997"),
+        passed: true,
+        hobbies: ["Coding", "Leading", "Video Editing"],
+        parents: {
+            father: "Abdur Razzak",
+            mother: "Parul Begum"
+        },
+        subjects: [{ name: "Math", marks: 65 }, { name: "Bangla", marks: 70 }]
+    })
 
+    try {
+        const data = await student.save();//save() function will save student document in mongoDb
+        console.log(data);
+    }
+    catch (error) {
+        console.log(error._message);
+    }
+}
 
-
-student.save() //save() function will save student document in mongoDb
-    .then(data => console.log(data))
-    .catch(error => console.log(error._message))
+createStudent();
