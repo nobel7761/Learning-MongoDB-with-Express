@@ -21,19 +21,25 @@ const studentSchema = new mongoose.Schema({
 
 //Model (mongoose feature! not mongoDB)
 const Student = mongoose.model('Student', studentSchema); //model() will receive 2 parameters! 1st = collection_name, 2nd = Schema_Name
+
+const student = new Student({
+    firstName: "Md. Habibur",
+    lastName: "Rahaman",
+    dob: new Date("21 June 1997"),
+    passed: true,
+    hobbies: ["Coding", "Leading", "Video Editing"],
+    parents: {
+        father: "Abdur Razzak",
+        mother: "Parul Begum"
+    },
+    subjects: [{ name: "Math", marks: 65 }, { name: "Bangla", marks: 70 }]
+})
+
+//CRUD
+
+//C => Create
 async function createStudent() {
-    const student = new Student({
-        firstName: "Md. Habibur",
-        lastName: "Rahaman",
-        dob: new Date("21 June 1997"),
-        passed: true,
-        hobbies: ["Coding", "Leading", "Video Editing"],
-        parents: {
-            father: "Abdur Razzak",
-            mother: "Parul Begum"
-        },
-        subjects: [{ name: "Math", marks: 65 }, { name: "Bangla", marks: 70 }]
-    })
+
 
     try {
         const data = await student.save();//save() function will save student document in mongoDb
@@ -44,4 +50,21 @@ async function createStudent() {
     }
 }
 
-createStudent();
+// createStudent();
+
+//R => Read
+async function readStudent() {
+    try {
+        const data = await Student
+            .find()
+            .limit(10)
+            .sort({ firstName: -1 /*descending order*/, lastName: 1 })
+            .select({ firstName: 1, lastName: 1, hobbies: 1 });
+        console.log(data);
+    }
+    catch (error) {
+        console.log(error._message);
+    }
+}
+
+readStudent();
