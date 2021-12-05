@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { Student } = require('../models/students');
 
-const studentList = (req, res) => {
-
+const studentList = async (req, res) => {
+    const student = await Student.find()
+        .sort({ name: 1 });
+    res.send(student);
 };
 
 const newStudent = async (req, res) => {
@@ -22,9 +24,18 @@ const newStudent = async (req, res) => {
 
 };
 
-const studentDetail = (req, res) => {
-    const id = parseInt(req.params.id);
-
+const studentDetail = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const student = await Student.findById(id);
+        if (!student) {
+            return res.status(404).send("ID not found")
+        }
+        res.send(student);
+    }
+    catch (error) {
+        return res.status(404).send("ID not found")
+    }
 };
 
 const studentUpdate = (req, res) => {
