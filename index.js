@@ -8,10 +8,23 @@ mongoose.connect('mongodb://localhost:27017/my-students', { useNewUrlParser: tru
 const studentSchema = new mongoose.Schema({
     firstName: { type: String },
     lastName: { type: String, required: [true, "Please Enter Last Name"] },
-    dob: Date,
+    dob: {
+        type: Date,
+        validate: {
+            validator: (value) => value > new Date("1 January 2000"),
+            message: "Date Must Be After 1 January 2000"
+        }
+    },
     entryDate: { type: Date, default: Date.now },
     passed: Boolean,
-    hobbies: [String],
+    hobbies: {
+        type: Array,
+        of: String,
+        validate: {
+            validator: (value) => value.length > 0,
+            message: "There must be at least 1 hobby"
+        }
+    },
     parents: {
         father: String,
         mother: String
@@ -29,7 +42,7 @@ async function createStudent() {
             // lastName: "Razzak",
             dob: new Date("21 June 1997"),
             passed: true,
-            hobbies: ["Coding", "Leading", "Video Editing"],
+            hobbies: [],
             parents: {
                 father: "Abdur Razzak",
                 mother: "Parul Begum"
