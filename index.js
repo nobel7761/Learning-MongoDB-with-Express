@@ -7,7 +7,7 @@ mongoose.connect('mongodb://localhost:27017/my-students', { useNewUrlParser: tru
 // Schema => defines the shape of documents (mongoose feature! not mongoDB)
 const studentSchema = new mongoose.Schema({
     firstName: { type: String },
-    lastName: String,
+    lastName: { type: String, required: [true, "Please Enter Last Name"] },
     dob: Date,
     entryDate: { type: Date, default: Date.now },
     passed: Boolean,
@@ -23,20 +23,25 @@ const studentSchema = new mongoose.Schema({
 const Student = mongoose.model('Student', studentSchema); //model() will receive 2 parameters! 1st = collection_name, 2nd = Schema_Name
 
 async function createStudent() {
-    const data = await Student.create({
-        firstName: "Rokaiah",
-        lastName: "Fardous",
-        dob: new Date("21 June 1997"),
-        passed: true,
-        hobbies: ["Coding", "Leading", "Video Editing"],
-        parents: {
-            father: "Abdur Razzak",
-            mother: "Parul Begum"
-        },
-        subjects: [{ name: "Math", marks: 65 }, { name: "Bangla", marks: 70 }]
-    });
+    try {
+        const data = await Student.create({
+            firstName: "Abdur",
+            // lastName: "Razzak",
+            dob: new Date("21 June 1997"),
+            passed: true,
+            hobbies: ["Coding", "Leading", "Video Editing"],
+            parents: {
+                father: "Abdur Razzak",
+                mother: "Parul Begum"
+            },
+            subjects: [{ name: "Math", marks: 65 }, { name: "Bangla", marks: 70 }]
+        });
 
-    console.log(data);
+        console.log(data);
+    }
+    catch (error) {
+        console.log(error.message);
+    }
 
 }
 
