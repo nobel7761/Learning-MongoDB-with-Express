@@ -7,12 +7,12 @@ mongoose.connect('mongodb://localhost:27017/my-students', { useNewUrlParser: tru
 // Schema => defines the shape of documents (mongoose feature! not mongoDB)
 const studentSchema = new mongoose.Schema({
     firstName: { type: String },
-    lastName: { type: String, required: [true, "Please Enter Last Name"] },
+    lastName: { type: String, required: [true, "Last Name: Please Enter Last Name"] },
     dob: {
         type: Date,
         validate: {
             validator: (value) => value > new Date("1 January 2000"),
-            message: "Date Must Be After 1 January 2000"
+            message: "DOB: Date Must Be After 1 January 2000"
         }
     },
     entryDate: { type: Date, default: Date.now },
@@ -22,7 +22,7 @@ const studentSchema = new mongoose.Schema({
         of: String,
         validate: {
             validator: (value) => value.length > 0,
-            message: "There must be at least 1 hobby"
+            message: "Hobbies: There must be at least 1 hobby"
         }
     },
     parents: {
@@ -53,7 +53,9 @@ async function createStudent() {
         console.log(data);
     }
     catch (error) {
-        console.log(error.message);
+        for (field in error.errors) {
+            console.log(error.errors[field].message)
+        }
     }
 
 }
