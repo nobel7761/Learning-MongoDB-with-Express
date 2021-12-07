@@ -5,7 +5,7 @@ const userRouter = require('./routers/userRouter');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/my-students-2', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost:27017/my-students-2', { useNewUrlParser: true, useUnifiedTopology: true, })
     .then(() => console.log("MongoDB Connection Successful"))
     .catch(error => console.log("MongoDB Connection Failed"))
 
